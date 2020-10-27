@@ -12,7 +12,7 @@ int main(){
 	sockaddr_in serverAddr;
 
 	int newSocket;
-	sockaddr_in newAddr;
+	sockaddr_in newAddr; 
 
 	socklen_t addr_size;
 	char buffer[1024];
