@@ -4,7 +4,8 @@
 using namespace std;
 
 
-bool check(string userID, string countryName);
+bool checkUserID(string userID, string countryName);
+bool checkCountryName(string countryName);
 
 int main() {
     
@@ -36,14 +37,20 @@ int main() {
     while (true) {
         cout << "Please enter the user ID: ";
     
+
+        // input userID and check validation
         string userID, countryName;
         cin >> userID;
 
+        if (!checkUserID(userID)) {
+            continue;
+        }
+
+        // input country name and check validation
         cout << "please enter the Country Name:";
-        cin >> countryName;  
-
-
-        if (!check(userID, countryName)) {
+        getline(cin, countryName);  
+        
+        if (!checkCountryName(countryName)) {
             continue;
         }
 
@@ -78,7 +85,7 @@ int main() {
 }
 
 //  check whether the input is valid
-bool check(string userID, string countryName) {
+bool checkUserID(string userID) {
 
     //  check userID
     for (char digit : userID) {
@@ -87,13 +94,16 @@ bool check(string userID, string countryName) {
             return false;
         }
     }
+    return true;
+}
 
+bool checkCountryName(string countryName) {
     //  check country name
     for (char letter : countryName) {
-        if (!isalpha(letter)) {
+        if (!isalpha(letter) || letter != ' ') {
             cout << "Invalid country name! Country Name has to be all alphabetic letter!" <<endl;
             return false;
         }
     }
-    return 0;
+    return true;
 }

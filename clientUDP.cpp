@@ -3,8 +3,6 @@
 using namespace std;
 int main(){
 
-
-
     int sockfd;
     struct sockaddr_in serverAddr;
     char buffer[4096];
