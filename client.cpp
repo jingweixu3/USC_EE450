@@ -1,10 +1,9 @@
-
 #include "constant.h"
 
 using namespace std;
 
 
-bool checkUserID(string userID, string countryName);
+bool checkUserID(string userID);
 bool checkCountryName(string countryName);
 
 int main() {
@@ -48,7 +47,7 @@ int main() {
 
         // input country name and check validation
         cout << "please enter the Country Name:";
-        getline(cin, countryName);  
+        cin >> countryName;    // according to the requirements, country name does not contain white space, just use cin 
         
         if (!checkCountryName(countryName)) {
             continue;
@@ -100,7 +99,7 @@ bool checkUserID(string userID) {
 bool checkCountryName(string countryName) {
     //  check country name
     for (char letter : countryName) {
-        if (!isalpha(letter) || letter != ' ') {
+        if (!isalpha(letter)) {
             cout << "Invalid country name! Country Name has to be all alphabetic letter!" <<endl;
             return false;
         }

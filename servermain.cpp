@@ -8,6 +8,29 @@ int main(){
 
     cout << "Main Server is up and running\n";
 
+	// udp
+
+    int sockfd_UDP;
+    sockaddr_in A_serverAddr_UDP;
+    char buffer[4096];
+
+    sockfd_UDP = socket(PF_INET, SOCK_DGRAM, 0);
+    memset(&A_serverAddr_UDP, '\0', sizeof(A_serverAddr_UDP));
+
+    A_serverAddr_UDP.sin_family = AF_INET;
+    A_serverAddr_UDP.sin_port = htons(UDP_SERVER_A);
+    A_serverAddr_UDP.sin_addr.s_addr = inet_addr(LOCAL_IP.c_str());
+
+	// send country request 
+
+	sendto(sockfd_UDP, REQUEST_COUNTRY_LIST.c_str(), REQUEST_COUNTRY_LIST.size() + 1, 0, (struct sockaddr*)&A_serverAddr_UDP, sizeof(A_serverAddr_UDP));
+
+    socklen_t  A_serverAddr_UDP_length = sizeof(A_serverAddr_UDP);
+
+	recvfrom(sockfd_UDP, buffer, 1024, 0, (sockaddr*) &A_serverAddr_UDP, &A_serverAddr_UDP_length);
+	cout << "[+]Receiving: " << buffer << endl;
+
+	// tcp 
 	int server_socket, bind_return;
 	sockaddr_in serverAddr;
 
@@ -15,7 +38,6 @@ int main(){
 	sockaddr_in newAddr; 
 
 	socklen_t addr_size;
-	char buffer[1024];
 	pid_t childpid;
 
     // create server socket
@@ -51,23 +73,37 @@ int main(){
 		}
 		cout << "Connection accepted from " << inet_ntoa(newAddr.sin_addr) << ": " << ntohs(newAddr.sin_port) << "\n";
 
-
 		// child process 
 		if((childpid = fork()) == 0) {
 			close(server_socket);
 
 			while(1) {
-				if (recv(newSocket, buffer, 1024, 0) == 0){
+				if (recv(newSocket, buffer, 4096, 0) == 0){
 					continue;
 				}
 				
-				printf("Client: %s\n", buffer);
+				cout << "Data from Client: " << buffer << endl;
+
+				// check country existed or not, and do something
+
+				// sending info to UDP
+				
+				
+				sendto(sockfd_UDP, buffer, 4096, 0, (struct sockaddr*)&A_serverAddr_UDP, sizeof(A_serverAddr_UDP));
+				cout << "Data send to UDP Server: " <<  buffer << endl;				
+				recvfrom(sockfd_UDP, buffer, 4096, 0, (sockaddr*) &A_serverAddr_UDP, &A_serverAddr_UDP_length);
+				cout << "Data from UDP Server: " <<  buffer << endl;
+
+				// send back to client
 				send(newSocket, buffer, strlen(buffer), 0);
+				cout << "Data send to Client: " <<  buffer << endl;
+
 				bzero(buffer, sizeof(buffer));	
 			}
 		}
 	}
 
+	close(sockfd_UDP);
 	close(newSocket);
 	close(server_socket);
 

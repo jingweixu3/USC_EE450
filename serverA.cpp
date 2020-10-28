@@ -39,7 +39,7 @@ int main(){
         cout << "Data Received:" << buffer << endl;
 
         sendto(sockfd, buffer, 1024, 0, (sockaddr*) &clientAddr, sizeof(clientAddr));
-
+        cout << "Data Send: " << buffer << endl;
     }
     
     close(sockfd);

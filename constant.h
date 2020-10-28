@@ -12,7 +12,7 @@
 #include <netinet/in.h>
 
 const std::string LOCAL_IP = "127.0.0.1";
-
+const std::string REQUEST_COUNTRY_LIST = "CountryList";
 const int UDP_SERVER_A = 30051;
 const int UDP_SERVER_B = 31051;
 const int UDP_MAIN_SERVER = 32051;

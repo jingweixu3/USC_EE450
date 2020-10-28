@@ -3,17 +3,16 @@
 using namespace std;
 int main(){
 
-    int sockfd;
-    struct sockaddr_in serverAddr;
+    int sockfd_UDP;
+    sockaddr_in serverAddr_UDP;
     char buffer[4096];
-    socklen_t addr_size;
 
-    sockfd = socket(PF_INET, SOCK_DGRAM, 0);
-    memset(&serverAddr, '\0', sizeof(serverAddr));
+    sockfd_UDP = socket(PF_INET, SOCK_DGRAM, 0);
+    memset(&serverAddr_UDP, '\0', sizeof(serverAddr_UDP));
 
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(UDP_SERVER_A);
-    serverAddr.sin_addr.s_addr = inet_addr(LOCAL_IP.c_str());
+    serverAddr_UDP.sin_family = AF_INET;
+    serverAddr_UDP.sin_port = htons(UDP_SERVER_A);
+    serverAddr_UDP.sin_addr.s_addr = inet_addr(LOCAL_IP.c_str());
 
 
     while (true) {
@@ -23,16 +22,16 @@ int main(){
 
         // strcpy(char_array, userInput.c_str())
         
-        sendto(sockfd, userInput.c_str(), userInput.size() + 1, 0, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
+        sendto(sockfd_UDP, userInput.c_str(), userInput.size() + 1, 0, (struct sockaddr*)&serverAddr_UDP, sizeof(serverAddr_UDP));
 
-        socklen_t  siaddr_size = sizeof(serverAddr);
+        socklen_t  serverAddr_UDP_length = sizeof(serverAddr_UDP);
 
-        recvfrom(sockfd, buffer, 1024, 0, (sockaddr*) &serverAddr, &siaddr_size);
+        recvfrom(sockfd_UDP, buffer, 1024, 0, (sockaddr*) &serverAddr_UDP, &serverAddr_UDP_length);
         cout << "[+]Receiving: " << buffer << endl;
 
     }
    
-    close(sockfd);
+    close(sockfd_UDP);
   return 0;
 
 }
