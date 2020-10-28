@@ -17,6 +17,8 @@ const int UDP_SERVER_A = 30051;
 const int UDP_SERVER_B = 31051;
 const int UDP_MAIN_SERVER = 32051;
 const int TCP_MAIN = 33051;
+const int BUFFER_LENGTH = 4096;
+
 
 #endif 
 

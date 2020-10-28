@@ -1,18 +1,14 @@
 #include "constant.h"
 
-
 using namespace std;
-
 
 int main(){
 
     int sockfd;
 
     sockaddr_in serverAddr, clientAddr;
-
-    char buffer[1024];
+    char buffer[4096];
     socklen_t addr_size;
-
 
     // create UDP socket
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
