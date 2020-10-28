@@ -30,7 +30,7 @@ int main(){
     serverAddr.sin_port = htons(TCP_MAIN);
     inet_pton(AF_INET, "0.0.0.0", &serverAddr.sin_addr);
 
-	bind_return = bind(server_socket, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
+	bind_return = bind(server_socket, (sockaddr*)&serverAddr, sizeof(serverAddr));
 	
     if(bind_return < 0) {
 		cout << "Error in binding.\n";
@@ -45,7 +45,7 @@ int main(){
     memset(&buffer, '\0', sizeof(buffer));
 
 	while(1) {
-		newSocket = accept(server_socket, (struct sockaddr*)&newAddr, &addr_size);
+		newSocket = accept(server_socket, (sockaddr*)&newAddr, &addr_size);
 		if(newSocket < 0) {
 			return -1;
 		}

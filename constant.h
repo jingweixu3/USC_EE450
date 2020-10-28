@@ -13,8 +13,8 @@
 
 const std::string LOCAL_IP = "127.0.0.1";
 
-const int UDP_SERVER_1 = 30051;
-const int UDP_SERVER_2 = 31051;
+const int UDP_SERVER_A = 30051;
+const int UDP_SERVER_B = 31051;
 const int UDP_MAIN_SERVER = 32051;
 const int TCP_MAIN = 33051;
 
