@@ -27,10 +27,10 @@ int main(){
 		return -1;
     }
 
+    cout << "ServerA is up and running!" << endl;
     // receiving and send back
     while (1) {
         memset(&buffer, '\0', sizeof(buffer));
-        
         memset(&clientAddr, '\0', sizeof(clientAddr));
         
         socklen_t  siaddr_size = sizeof(clientAddr);

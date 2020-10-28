@@ -11,7 +11,7 @@ int main() {
     //	Create a socket
     int client_sock = socket(AF_INET, SOCK_STREAM, 0);
     if (client_sock == -1) {
-        return 1;
+        return -1;
     }
 
     //	Create a structure for the server we're connecting with
@@ -24,7 +24,7 @@ int main() {
     //	Connect to the server on the socket
     int connectRes = connect(client_sock, (sockaddr*)&server_addr, sizeof(server_addr));
     if (connectRes == -1) {
-        return 1;
+        return -1;
     }
 
     //	While loop:
@@ -33,7 +33,7 @@ int main() {
 
     cout << "The client is up and running\n";
 
-    do {
+    while (true) {
         cout << "Please enter the user ID: ";
     
         string userID, countryName;
@@ -49,7 +49,7 @@ int main() {
 
         userInput = userID + " " + countryName;  
 
-        //		Send to server
+        //  Send to server
         int sendRes = send(client_sock, userInput.c_str(), userInput.size() + 1, 0);
         if (sendRes == -1) {
             cout << "Could not send to server! Whoops!\r\n";
@@ -58,7 +58,7 @@ int main() {
 
         cout << "Client1 has sent User <" << userID << "> <" << countryName << "> to Main Server using TCP\n";
 
-        //		Wait for response
+        //	Wait for response
         memset(buf, 0, 4096);
         
         int bytesReceived = recv(client_sock, buf, 4096, 0);
@@ -66,10 +66,10 @@ int main() {
             cout << "There was an error getting response from server\r\n";
         }
         else {
-            //		Display response
+            //	Display response
             cout << "<SERVER> " << string(buf, bytesReceived) << "\r\n";
         }
-    } while(true);
+    }
 
     //	Close the socket
     close(client_sock);
@@ -77,10 +77,10 @@ int main() {
     return 0;
 }
 
-// check whether the input is valid
+//  check whether the input is valid
 bool check(string userID, string countryName) {
 
-    // check userID
+    //  check userID
     for (char digit : userID) {
         if (!isdigit(digit)) {
             cout << "Invalid userID!, UserID has to be all digits!" << endl;
@@ -88,11 +88,12 @@ bool check(string userID, string countryName) {
         }
     }
 
+    //  check country name
     for (char letter : countryName) {
         if (!isalpha(letter)) {
             cout << "Invalid country name! Country Name has to be all alphabetic letter!" <<endl;
             return false;
         }
     }
-    return true;
+    return 0;
 }
