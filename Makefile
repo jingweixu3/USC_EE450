@@ -1,6 +1,6 @@
-objects = servermain.o client.o serverA.o graph.o
+objects = servermain.o client.o serverA.o serverB.o
 # serverB.o
-exe = servermain client serverA graph
+exe = servermain client serverA serverB
 
 %.o: %.cpp
 	g++ -std=c++11 -g -c -o $@ $^
@@ -10,7 +10,7 @@ all: $(objects)
 	g++ -g -o client client.o
 	g++ -g -o serverA serverA.o
 	g++ -g -o graph graph.o
-	# g++ -g -o serverB serverB.o
+	g++ -g -o serverB serverB.o
 
 .PHONY: clean
 clean:

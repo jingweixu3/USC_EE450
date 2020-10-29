@@ -10,15 +10,20 @@ int main(){
     cout << "Main Server is up and running\n";
 
 	// initialize udp
-    int sockfd_UDP;
-    sockaddr_in A_serverAddr_UDP;
-
-    create_UDP(sockfd_UDP, A_serverAddr_UDP, UDP_SERVER_A, LOCAL_IP);
+    int sockfd_UDP_A, sockfd_UDP_B;
+    sockaddr_in A_serverAddr_UDP, B_serverAddr_UDP;
+    create_UDP(sockfd_UDP_A, A_serverAddr_UDP, UDP_SERVER_A, LOCAL_IP);
+    create_UDP(sockfd_UDP_B, B_serverAddr_UDP, UDP_SERVER_B, LOCAL_IP);
 
 	// send country request 
-	string countryList = UDP_send_receive(sockfd_UDP, A_serverAddr_UDP, REQUEST_COUNTRY_LIST);
-	cout << "[+] country list: " << countryList << endl<<endl;
-	unordered_set<string> country_set = convert_string_to_set(countryList);
+		// from server A
+	string countryList_A = UDP_send_receive(sockfd_UDP_A, A_serverAddr_UDP, REQUEST_COUNTRY_LIST);
+	cout << "[+]Country list from server A: " << countryList_A << endl << endl;
+	unordered_set<string> country_set_A = convert_string_to_set(countryList_A);
+		// from server B
+	string countryList_B = UDP_send_receive(sockfd_UDP_B, B_serverAddr_UDP, REQUEST_COUNTRY_LIST);
+	cout << "[+]Country list from server B: " << countryList_B << endl << endl;
+	unordered_set<string> country_set_B = convert_string_to_set(countryList_B);
 	
 	// initialize tcp server
 	int server_socket, bind_return;
@@ -68,20 +73,23 @@ int main(){
 
 				int userID = stoi(message_list[0]);
 				string country_name = message_list[1];
+				string reply;
 
 				// check country existed or not, and do something
-				if (country_set.find(country_name) == country_set.end()) {
+				if (country_set_A.find(country_name) == country_set_A.end() && country_set_B.find(country_name) == country_set_B.end()) {
 					
 					// send back to client
-					string reply = "<" + country_name + "> " + NO_COUNTRY_FOUND;
+					reply = "<" + country_name + "> " + NO_COUNTRY_FOUND;
 					send(newSocket, reply.c_str(),reply.size() + 1, 0);
 					cout << "[+]Data send to Client: " <<  reply << endl;
 					continue;
 				}
-
-				// sending info to UDP
-
-				string reply = UDP_send_receive(sockfd_UDP, A_serverAddr_UDP, buffer);
+				else if (country_set_A.find(country_name) != country_set_A.end()) {
+					reply = UDP_send_receive(sockfd_UDP_A, A_serverAddr_UDP, buffer);
+				}
+				else {
+					reply = UDP_send_receive(sockfd_UDP_B, B_serverAddr_UDP, buffer);
+				}
 
 				// send back to client
 				send(newSocket, reply.c_str(),reply.size() + 1, 0);
@@ -93,7 +101,8 @@ int main(){
 
 	}
 
-	close(sockfd_UDP);
+	close(sockfd_UDP_A);
+	close(sockfd_UDP_B);
 	close(server_socket);
 
 	return 0;
