@@ -21,7 +21,7 @@ int main(){
 	int server_socket, bind_return;
 	sockaddr_in serverAddr;
 
-	if (create_TCP(server_socket, serverAddr, TCP_MAIN, LOCAL_IP) == false) {
+	if (create_TCP_server(server_socket, serverAddr, TCP_MAIN, LOCAL_IP) == false) {
 		return -1;
 	}
 

@@ -5,7 +5,7 @@
 
 using namespace std;
 
-bool create_TCP (int &server_socket, sockaddr_in &serverAddr, int port, string IP) {	
+bool create_TCP_server(int &server_socket, sockaddr_in &serverAddr, int port, string IP) {	
 
 	// create server socket
 	server_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -31,7 +31,5 @@ bool create_TCP (int &server_socket, sockaddr_in &serverAddr, int port, string I
 
 	return true;
 }
-
-
 
 #endif 

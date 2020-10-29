@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void create_UDP (int &sockfd_UDP, sockaddr_in &serverAddr_UDP, int port, string ip) {
+void create_UDP(int &sockfd_UDP, sockaddr_in &serverAddr_UDP, int port, string ip) {
 	
 	// create udp 
 	sockfd_UDP = socket(PF_INET, SOCK_DGRAM, 0);
@@ -16,7 +16,7 @@ void create_UDP (int &sockfd_UDP, sockaddr_in &serverAddr_UDP, int port, string 
     serverAddr_UDP.sin_addr.s_addr = inet_addr(ip.c_str());
 }
 
-string UDP_send_receive (int &sockfd_UDP, sockaddr_in &serverAddr_UDP, string message) {
+string UDP_send_receive(int &sockfd_UDP, sockaddr_in &serverAddr_UDP, string message) {
 
 	sendto(sockfd_UDP, message.c_str(), message.size() + 1, 0, (struct sockaddr*)&serverAddr_UDP, sizeof(serverAddr_UDP));
 	cout << "[+]Sending: " << message << endl;

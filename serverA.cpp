@@ -1,22 +1,22 @@
 #include "constant.h"
+#include "udp.h"
 
 using namespace std;
 
 int main(){
 
-    int sockfd;
+    // create country list and build graph
 
+    // coutry list, userlist in each country, user networking graph
+
+
+    // initialize UDP server
+    int sockfd;
     sockaddr_in serverAddr, clientAddr;
     char buffer[4096];
     socklen_t addr_size;
 
-    // create UDP socket
-    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-
-    // bind IP and port to the socket
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(UDP_SERVER_A);
-    serverAddr.sin_addr.s_addr = inet_addr(LOCAL_IP.c_str());
+    create_UDP(sockfd, serverAddr, UDP_SERVER_A, LOCAL_IP);
 
     if (bind(sockfd, (struct sockaddr*)&serverAddr, sizeof(serverAddr))){
         cout << "Error in binding.\n";
@@ -24,6 +24,7 @@ int main(){
     }
 
     cout << "ServerA is up and running!" << endl;
+    
     // receiving and send back
     while (1) {
         memset(&buffer, '\0', sizeof(buffer));
