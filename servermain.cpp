@@ -1,6 +1,7 @@
 #include "constant.h"
 #include "tcp.h"
 #include "udp.h"
+#include "country.h"
 
 using namespace std;
 
@@ -16,6 +17,8 @@ int main(){
 
 	// send country request 
 	string countryList = UDP_send_receive(sockfd_UDP, A_serverAddr_UDP, REQUEST_COUNTRY_LIST);
+	cout << "[+] country list: " << countryList << endl<<endl;
+	unordered_set<string> country_set = convert_string_to_set(countryList);
 	
 	// initialize tcp server
 	int server_socket, bind_return;
@@ -53,19 +56,36 @@ int main(){
 					continue;
 				}
 				
-				cout << "Data from Client: " << buffer << endl;
+				cout << "[+]Data from Client: " << buffer << endl;
+
+				// split message
+				vector<string> message_list = convert_string_to_vector(string(buffer));
+				cout << message_list.size() << endl;
+				if (message_list.size() != 2) {
+					cout << "[-]Error in message from client." << endl;
+					continue;
+				}
+
+				int userID = stoi(message_list[0]);
+				string country_name = message_list[1];
 
 				// check country existed or not, and do something
+				if (country_set.find(country_name) == country_set.end()) {
+					
+					// send back to client
+					string reply = "<" + country_name + "> " + NO_COUNTRY_FOUND;
+					send(newSocket, reply.c_str(),reply.size() + 1, 0);
+					cout << "[+]Data send to Client: " <<  reply << endl;
+					continue;
+				}
 
 				// sending info to UDP
-				
-				string countryName = "China";
 
-				string reply = UDP_send_receive(sockfd_UDP, A_serverAddr_UDP, countryName);
+				string reply = UDP_send_receive(sockfd_UDP, A_serverAddr_UDP, buffer);
 
 				// send back to client
 				send(newSocket, reply.c_str(),reply.size() + 1, 0);
-				cout << "Data send to Client: " <<  reply << endl;
+				cout << "[+]Data send to Client: " <<  reply << endl;
 
 			}
 		}

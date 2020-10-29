@@ -12,7 +12,13 @@
 #include <netinet/in.h>
 
 const std::string LOCAL_IP = "127.0.0.1";
-const std::string REQUEST_COUNTRY_LIST = "CountryList";
+const std::string REQUEST_COUNTRY_LIST = "COUNTRY_LIST_REQUEST";
+const std::string NO_COUNTRY_FOUND = "does not show up in server A&B";
+const std::string NO_USER_FOUND = "User not found";
+const std::string NO_RECOMMENDATION = "No recommendation";
+const std::string RECOMMENDATION = "Recommendation User";
+
+
 const int UDP_SERVER_A = 30051;
 const int UDP_SERVER_B = 31051;
 const int UDP_MAIN_SERVER = 32051;
