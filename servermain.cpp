@@ -40,7 +40,7 @@ int main(){
 	unordered_set<string> country_set_A = convert_string_to_set(countryList_A);
 		// from server B
 	string countryList_B = UDP_send_receive(sockfd_UDP, B_serverAddr_UDP, REQUEST_COUNTRY_LIST);
-	cout << "[+] <" << UDP_MAIN_SERVER <<">Country list from server B <" << inet_ntoa(B_serverAddr_UDP.sin_addr) << ": " << ntohs(B_serverAddr_UDP.sin_port) 	
+	cout << "[+] <" << UDP_MAIN_SERVER <<"> Country list from server B <" << inet_ntoa(B_serverAddr_UDP.sin_addr) << ": " << ntohs(B_serverAddr_UDP.sin_port) 	
 		 << ">: "  << countryList_B << endl << endl;
 	unordered_set<string> country_set_B = convert_string_to_set(countryList_B);
 	
@@ -57,7 +57,7 @@ int main(){
 	while (1) {
 		sockaddr_in newAddr; 
 
-		socklen_t addr_size;
+		socklen_t addr_size = sizeof(newAddr);
 		pid_t childpid;
 
 		//accept request
@@ -65,7 +65,7 @@ int main(){
 		if(newSocket < 0) {
 			return -1;
 		}
-		// cout << "[+] Connection accepted from " << inet_ntoa(newAddr.sin_addr) << ": " << ntohs(newAddr.sin_port) << "\n";
+		cout << "[+] Connection accepted from " << inet_ntoa(newAddr.sin_addr) << ": " << ntohs(newAddr.sin_port) << "\n";
 
 		// child process 
 		if((childpid = fork()) == 0) {
@@ -119,7 +119,7 @@ int main(){
 				// send back to client
 				send(newSocket, reply.c_str(),reply.size() + 1, 0);
 				cout << "[+] <" << TCP_MAIN << "> Sending to Client <" << inet_ntoa(newAddr.sin_addr) << ": " << ntohs(newAddr.sin_port) 
-					 << "> :" <<  reply << endl << endl;
+					 << "> : " <<  reply << endl << endl;
 
 			}
 		}

@@ -29,7 +29,8 @@ string UDP_send_receive(int &sockfd_UDP, sockaddr_in &serverAddr_UDP, string mes
 	recvfrom(sockfd_UDP, buffer, BUFFER_LENGTH, 0, (sockaddr*) &serverAddr_UDP, &serverAddr_UDP_length);
 	// cout << "[+]Receiving: " << buffer << endl;
 	cout << "[+] <" << UDP_MAIN_SERVER << "> Receiving from UDP <" << inet_ntoa(serverAddr_UDP.sin_addr) << ": " << ntohs(serverAddr_UDP.sin_port) 	
-		 << "> : " <<  message << endl << endl;
+		 << "> : " <<  string(buffer) << endl << endl;
+	
 	return string(buffer);
 }
 

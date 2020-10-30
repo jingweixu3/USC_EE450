@@ -39,12 +39,12 @@ int main() {
     char buf[4096];
     string userInput;
 
-    cout << "The client is up and running." << endl <<endl;
+    cout << "The client is up and running at port <" << myPort << ">" << endl <<endl;
 
     while (true) {
 
         cout<< endl << "----------------------------------------------------" << endl;
-        cout << "[+] Please enter the user ID: ";
+        cout << "[+] <" << myPort << "> Please enter the user ID: ";
     
         // input userID and check validation
         string userID, countryName;
@@ -55,7 +55,7 @@ int main() {
         }
 
         // input country name and check validation
-        cout << "[+] Please enter the Country Name:";
+        cout << "[+] <" << myPort << "> Please enter the Country Name:";
         cin >> countryName;    // according to the requirements, country name does not contain white space, just use cin 
         
         if (!checkCountryName(countryName)) {
