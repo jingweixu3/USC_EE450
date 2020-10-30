@@ -9,7 +9,7 @@ int main(){
     // create country list and build graph
     string file_path = "./testcase3/data2.txt";
     unordered_set<Country*> country_set;
-    build_grapgh(country_set, file_path);
+    build_country(country_set, file_path);
     print_country_info(country_set);
 
     // initialize UDP server
@@ -22,11 +22,11 @@ int main(){
     create_UDP(sockfd, serverAddr, UDP_SERVER_B, LOCAL_IP);
 
     if (bind(sockfd, (struct sockaddr*)&serverAddr, sizeof(serverAddr))){
-        cout << "[-]Error in binding.\n";
+        cout << "[-] Error in binding." << endl;
 		return -1;
     }
 
-    cout << "[+]ServerA is up and running!" << endl;
+    cout << "[+] ServerB is up and running on the port <" << UDP_SERVER_B << ">" << endl << endl;
     
     // receiving and send back
     while (1) {
@@ -37,6 +37,7 @@ int main(){
 
         recvfrom(sockfd, buffer, BUFFER_LENGTH, 0, (sockaddr*) &clientAddr, &siaddr_size);
         message = string(buffer);
+        cout<< endl << "----------------------------------------------------" << endl;
         cout << "[+]Data Received:" << message << endl;
 
         if (message == REQUEST_COUNTRY_LIST) {
@@ -44,7 +45,6 @@ int main(){
         }
         else {
             vector<string> message_list = convert_string_to_vector(string(buffer));
-            cout << message_list.size() << endl;
             if (message_list.size() != 2) {
                 cout << "[-]Error in message from client." << endl;
                 continue;

@@ -31,12 +31,13 @@ int main() {
     char buf[4096];
     string userInput;
 
-    cout << "The client is up and running\n";
+    cout << "The client is up and running." << endl <<endl;
 
     while (true) {
-        cout << "Please enter the user ID: ";
-    
 
+        cout<< endl << "----------------------------------------------------" << endl;
+        cout << "[+] Please enter the user ID: ";
+    
         // input userID and check validation
         string userID, countryName;
         cin >> userID;
@@ -46,7 +47,7 @@ int main() {
         }
 
         // input country name and check validation
-        cout << "please enter the Country Name:";
+        cout << "[+] Please enter the Country Name:";
         cin >> countryName;    // according to the requirements, country name does not contain white space, just use cin 
         
         if (!checkCountryName(countryName)) {
@@ -58,22 +59,22 @@ int main() {
         //  Send to server
         int sendRes = send(client_sock, userInput.c_str(), userInput.size() + 1, 0);
         if (sendRes == -1) {
-            cout << "Could not send to server! Whoops!\r\n";
+            cout << "[-] Could not send to server! Whoops!\r\n";
             continue;
         }
 
-        cout << "Client1 has sent User <" << userID << "> <" << countryName << "> to Main Server using TCP\n";
+        cout << endl <<"[+] Client has sent User <" << userID << "> and <" << countryName << "> to Main Server using TCP." << endl << endl;
 
         //	Wait for response
         memset(buf, 0, 4096);
         
         int bytesReceived = recv(client_sock, buf, 4096, 0);
         if (bytesReceived == -1) {
-            cout << "There was an error getting response from server\r\n";
+            cout << "[-] There was an error getting response from server" << endl << endl;
         }
         else {
             //	Display response
-            cout << "<SERVER> " << string(buf, bytesReceived) << "\r\n";
+            cout << endl <<"[+] <FROM SERVER> " << string(buf, bytesReceived) << endl;
         }
     }
 

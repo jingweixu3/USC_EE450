@@ -7,7 +7,7 @@ using namespace std;
 
 int main(){
 
-    cout << "Main Server is up and running\n";
+    cout << "Main Server is up and running" << endl << endl;
 
 	// initialize udp
     int sockfd_UDP_A, sockfd_UDP_B;
@@ -18,11 +18,11 @@ int main(){
 	// send country request 
 		// from server A
 	string countryList_A = UDP_send_receive(sockfd_UDP_A, A_serverAddr_UDP, REQUEST_COUNTRY_LIST);
-	cout << "[+]Country list from server A: " << countryList_A << endl << endl;
+	cout << "[+] Country list from server A over UDP port <" << UDP_SERVER_A << "> : " << countryList_A << endl << endl;
 	unordered_set<string> country_set_A = convert_string_to_set(countryList_A);
 		// from server B
 	string countryList_B = UDP_send_receive(sockfd_UDP_B, B_serverAddr_UDP, REQUEST_COUNTRY_LIST);
-	cout << "[+]Country list from server B: " << countryList_B << endl << endl;
+	cout << "[+] Country list from server B over UDP port <" << UDP_SERVER_B << "> : "  << countryList_B << endl << endl;
 	unordered_set<string> country_set_B = convert_string_to_set(countryList_B);
 	
 	// initialize tcp server
@@ -45,7 +45,7 @@ int main(){
 		if(newSocket < 0) {
 			return -1;
 		}
-		cout << "Connection accepted from " << inet_ntoa(newAddr.sin_addr) << ": " << ntohs(newAddr.sin_port) << "\n";
+		// cout << "[+] Connection accepted from " << inet_ntoa(newAddr.sin_addr) << ": " << ntohs(newAddr.sin_port) << "\n";
 
 		// child process 
 		if((childpid = fork()) == 0) {
@@ -60,14 +60,19 @@ int main(){
 				if (recv(newSocket, buffer, BUFFER_LENGTH, 0) == 0){
 					continue;
 				}
-				
-				cout << "[+]Data from Client: " << buffer << endl;
+				cout<< endl << "----------------------------------------------------" << endl;
+
+				cout << "[+] Request from Client <" << inet_ntoa(newAddr.sin_addr) << ": " << ntohs(newAddr.sin_port) 
+					 << "> over TCP port <" << TCP_MAIN << "> :" << buffer << endl << endl;
 
 				// split message
 				vector<string> message_list = convert_string_to_vector(string(buffer));
 				cout << message_list.size() << endl;
 				if (message_list.size() != 2) {
-					cout << "[-]Error in message from client." << endl;
+					cout << "[-] Error in message from client <" << inet_ntoa(newAddr.sin_addr) << ": " << ntohs(newAddr.sin_port) 
+						 << "> over TCP port <" << TCP_MAIN << ">" << endl << endl;
+					send(newSocket, ERROR.c_str(), ERROR.size() + 1, 0);
+
 					continue;
 				}
 
@@ -81,7 +86,8 @@ int main(){
 					// send back to client
 					reply = "<" + country_name + "> " + NO_COUNTRY_FOUND;
 					send(newSocket, reply.c_str(),reply.size() + 1, 0);
-					cout << "[+]Data send to Client: " <<  reply << endl;
+					cout << "[+]Data send to Client:  <" << inet_ntoa(newAddr.sin_addr) << ": " << ntohs(newAddr.sin_port) 
+						 << "> over TCP port <" << TCP_MAIN << "> :" <<  reply << endl << endl;
 					continue;
 				}
 				else if (country_set_A.find(country_name) != country_set_A.end()) {
@@ -93,7 +99,8 @@ int main(){
 
 				// send back to client
 				send(newSocket, reply.c_str(),reply.size() + 1, 0);
-				cout << "[+]Data send to Client: " <<  reply << endl;
+				cout << "[+]Data send to Client <" << inet_ntoa(newAddr.sin_addr) << ": " << ntohs(newAddr.sin_port) 
+					 << "> over TCP port <" << TCP_MAIN << "> :" <<  reply << endl << endl;
 
 			}
 		}

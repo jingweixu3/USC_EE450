@@ -17,6 +17,8 @@ const std::string NO_COUNTRY_FOUND = "does not show up in server A&B";
 const std::string NO_USER_FOUND = "User not found";
 const std::string NO_RECOMMENDATION = "No recommendation";
 const std::string RECOMMENDATION = "Recommendation User";
+const std::string ERROR = "Error in Message";
+
 
 
 const int UDP_SERVER_A = 30051;

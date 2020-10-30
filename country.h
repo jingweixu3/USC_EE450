@@ -26,7 +26,7 @@ class Country {
 };
 
 
-void build_grapgh(unordered_set<Country*> &country_set, string file_path) {
+void build_country(unordered_set<Country*> &country_set, string file_path) {
     
     string line;
     ifstream myfile (file_path);
@@ -85,8 +85,9 @@ int count_relationship(Country* country) {
 
 void print_country_info(unordered_set<Country*> &country_set) {
     for (auto country : country_set) {
-        cout << country->name << " "  << country->user_list.size() << " "  << count_relationship(country)<< endl;
+        cout << country->name << "      "  << country->user_list.size() << "        "  << count_relationship(country)<< endl;
     }
+    cout << endl;
 }
 
 string country_list(unordered_set<Country*> &country_set) {
@@ -123,7 +124,6 @@ vector<string> convert_string_to_vector(string input_string) {
         ss >> word;
         if (word == "") continue;
         result.push_back(word);
-        cout << word <<endl;
     }while (ss);
 
     return result;
@@ -152,9 +152,7 @@ Country* find_country(unordered_set<Country*> &country_set, string country_name)
 
 string recommendation_system(string country_name, int userID, unordered_set<Country*> &country_set) {
     
-
     Country* country = find_country(country_set, country_name);
-
     if (country == nullptr) {
         return NO_RECOMMENDATION;        
     }
@@ -173,6 +171,7 @@ string recommendation_system(string country_name, int userID, unordered_set<Coun
         return NO_RECOMMENDATION;
     }
 
+    // find unconnected set N
     unordered_set<int> unconnected_set;
     unordered_set<int> user_friend_set = (country->friend_list)[userID];
     
@@ -182,9 +181,9 @@ string recommendation_system(string country_name, int userID, unordered_set<Coun
         }
     }
 
-    //check common
+    //check common freinds
     int max_num = 1;
-    int max_id = INT_MAX;
+    long max_id = LONG_MAX;
     
     for (int id : unconnected_set) {
         int inter_count = intersection(country->friend_list[id], user_friend_set);
@@ -197,13 +196,13 @@ string recommendation_system(string country_name, int userID, unordered_set<Coun
         }
     }
 
-    if (max_id != INT_MAX) {
+    if (max_id != LONG_MAX) {
         return RECOMMENDATION + " <" + to_string(max_id) + ">";
     }
     
     // highest degree
     max_num = 0;
-    max_id = INT_MAX;
+    max_id = LONG_MAX;
     for (int id : unconnected_set) {
         int count = country->friend_list[id].size();
         if (max_num == count && id < max_id) {
@@ -215,7 +214,7 @@ string recommendation_system(string country_name, int userID, unordered_set<Coun
         }
     }
     
-    if (max_id != INT_MAX) {
+    if (max_id != LONG_MAX) {
         return RECOMMENDATION + " <" + to_string(max_id) + ">";
     }
 
