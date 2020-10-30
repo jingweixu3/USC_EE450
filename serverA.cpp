@@ -22,11 +22,11 @@ int main(){
     create_UDP(sockfd, serverAddr, UDP_SERVER_A, LOCAL_IP);
 
     if (bind(sockfd, (struct sockaddr*)&serverAddr, sizeof(serverAddr))){
-        cout << "[-] Error in binding." << endl;
+        cout << "[-] <" << UDP_SERVER_A << ">Error in binding." << endl;
 		return -1;
     }
 
-    cout << "[+] ServerA is up and running on the port <" << UDP_SERVER_A << ">" << endl << endl;
+    cout << "[+] Server A is up and running on the port <" << UDP_SERVER_A << ">" << endl << endl;
     
     // receiving and send back
     while (1) {
@@ -38,7 +38,8 @@ int main(){
         recvfrom(sockfd, buffer, BUFFER_LENGTH, 0, (sockaddr*) &clientAddr, &siaddr_size);
         message = string(buffer);
         cout<< endl << "----------------------------------------------------" << endl;
-        cout << "[+]Data Received:" << message << endl;
+        cout << "[+] <" << UDP_SERVER_A <<"> Receiving from <" << inet_ntoa(clientAddr.sin_addr) << ": " << ntohs(clientAddr.sin_port) 	
+			 << ">: " << message << endl;
 
         if (message == REQUEST_COUNTRY_LIST) {
             message = country_list(country_set);
@@ -46,14 +47,14 @@ int main(){
         else {
             vector<string> message_list = convert_string_to_vector(string(buffer));
             if (message_list.size() != 2) {
-                cout << "[-]Error in message from client." << endl;
+                cout << "[-] Error in message from client <" << inet_ntoa(clientAddr.sin_addr) << ": " << ntohs(clientAddr.sin_port) << ">" << endl;
                 continue;
             }
 
             int userID = stoi(message_list[0]);
             string country_name = message_list[1];
 
-            cout << "[+]UserID: " <<userID << " Country Name: " << country_name << endl;
+            // cout << "[+]UserID: " <<userID << " Country Name: " << country_name << endl;
 
             // recommendation system
             message = recommendation_system(country_name, userID, country_set);
@@ -62,7 +63,8 @@ int main(){
         }
 
         sendto(sockfd, message.c_str(), message.size() + 1, 0, (sockaddr*) &clientAddr, sizeof(clientAddr));
-        cout << "[+]Data Send: " << message << endl;
+        cout << "[+] <" << UDP_SERVER_A <<"> Sending to <" << inet_ntoa(clientAddr.sin_addr) << ": " << ntohs(clientAddr.sin_port) 	
+			 << ">: " << message << endl;
     }
     
     close(sockfd);

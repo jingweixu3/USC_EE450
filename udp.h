@@ -19,8 +19,8 @@ void create_UDP(int &sockfd_UDP, sockaddr_in &serverAddr_UDP, int port, string i
 string UDP_send_receive(int &sockfd_UDP, sockaddr_in &serverAddr_UDP, string message) {
 
 	sendto(sockfd_UDP, message.c_str(), message.size() + 1, 0, (struct sockaddr*)&serverAddr_UDP, sizeof(serverAddr_UDP));
-	// cout << "[+]Sending: " << message << endl;
-
+	cout << "[+] <" << UDP_MAIN_SERVER << "> Sending to UDP <" << inet_ntoa(serverAddr_UDP.sin_addr) << ": " << ntohs(serverAddr_UDP.sin_port) 	
+		 << "> : " <<  message << endl << endl;
     socklen_t  serverAddr_UDP_length = sizeof(serverAddr_UDP);
 
 	char buffer[BUFFER_LENGTH];
@@ -28,7 +28,8 @@ string UDP_send_receive(int &sockfd_UDP, sockaddr_in &serverAddr_UDP, string mes
 	
 	recvfrom(sockfd_UDP, buffer, BUFFER_LENGTH, 0, (sockaddr*) &serverAddr_UDP, &serverAddr_UDP_length);
 	// cout << "[+]Receiving: " << buffer << endl;
-
+	cout << "[+] <" << UDP_MAIN_SERVER << "> Receiving from UDP <" << inet_ntoa(serverAddr_UDP.sin_addr) << ": " << ntohs(serverAddr_UDP.sin_port) 	
+		 << "> : " <<  message << endl << endl;
 	return string(buffer);
 }
 
