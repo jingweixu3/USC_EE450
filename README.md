@@ -3,7 +3,6 @@ USC EE 450 project
 
 
 a. Name: Jingwei Xu
-   USC NetID: 
 
 b. Have done in the assignment:
         
