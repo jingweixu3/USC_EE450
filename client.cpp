@@ -26,7 +26,7 @@ int main() {
         return -1;
     }
 
-    // get my port and IP
+    // get my port and IP refer to https://gist.github.com/listnukira/4045436
     int myPort;
     char myIP[16];
     bzero(&my_addr, sizeof(my_addr));
@@ -82,7 +82,7 @@ int main() {
         }
         else {
             //	Display response
-            cout << endl << "[+] <" << myPort << "> Receiving from TCP SERVER < "
+            cout << endl << "[+] <" << myPort << "> Receiving from TCP SERVER <"
                  << inet_ntoa(server_addr.sin_addr) << ": " << ntohs(server_addr.sin_port) << "> :" << string(buf, bytesReceived) << endl;
         }
     }
@@ -99,7 +99,7 @@ bool checkUserID(string userID) {
     //  check userID
     for (char digit : userID) {
         if (!isdigit(digit)) {
-            cout << "Invalid userID!, UserID has to be all digits!" << endl;
+            cout << "Invalid userID! UserID has to be all digits!" << endl;
             return false;
         }
     }
