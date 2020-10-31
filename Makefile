@@ -4,12 +4,25 @@ exe = servermain client serverA serverB
 
 %.o: %.cpp
 	g++ -std=c++11 -g -c -o $@ $^
-	
+
 all: $(objects)
-	g++ -g -o servermain servermain.o
-	g++ -g -o client client.o
-	g++ -g -o serverA serverA.o
-	g++ -g -o serverB serverB.o
+	g++ -std=c++11 -g -o servermain servermain.o
+	g++ -std=c++11 -g -o client client.o
+	g++ -std=c++11 -g -o serverA serverA.o
+	g++ -std=c++11 -g -o serverB serverB.o
+
+client: client.o
+	g++ -std=c++11 -g -o client client.o
+
+mainserver: servermian.o 
+	g++ -std=c++11 -g -o servermain servermain.o
+
+serverA: serverA.o
+	g++ -std=c++11 -g -o serverA serverA.o
+
+serverB: serverB.o
+	g++ -std=c++11 -g -o serverB serverB.o
+
 
 .PHONY: clean
 clean:

@@ -3,12 +3,9 @@ USC EE 450 project
 
 
 a. Name: Jingwei Xu
+   USC NetID: 
 
-
-b. USC NetID: 
-
-
-c. Have done in the assignment:
+b. Have done in the assignment:
         
         In this project, I implemented an application to generate customized recommendatinos based on the
     user queries. We have multiple clients sending queries to the TCP server and the TCP server will reply 
@@ -21,6 +18,12 @@ c. Have done in the assignment:
     according to the query, it will send request to UDP server and ask for recommendation. After it get the reply, it 
     will send the response back to client.
 
+c. Port Number:
+        Backend-Server A: UDP 30501
+        Backend-Server B: UDP 31501
+        Main Server: UDP 32501
+                     TCP 33501
+        Client: Dynamic TCP PORT
 
 d. Code files:
 
